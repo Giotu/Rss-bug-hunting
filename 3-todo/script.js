@@ -37,7 +37,7 @@ function deleteTask(id) {
 }
 
 function clearCompleted() {
-  tasks = [];
+  tasks = tasks.filter((task) => !task.done);
   render();
 }
 
@@ -53,9 +53,9 @@ function updateCounter() {
   counter.textContent = "Активных задач: " + tasks.filter((task) => !task.done).length;
 }
 
-function render(filter = "all") {
+function render() {
   list.replaceChildren();
-  const visible = getVisibleTasks(filter);
+  const visible = getVisibleTasks(currentFilter);
   for (let i = 0; i < visible.length; i++) {
     const task = visible[i];
     const li = document.createElement("li");
@@ -89,7 +89,7 @@ filterButtons.forEach((btn) => {
     filterButtons.forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
     currentFilter = btn.dataset.filter;
-    render(currentFilter);
+    render();
   });
 });
 
