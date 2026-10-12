@@ -41,7 +41,11 @@ function clearCompleted() {
   render();
 }
 
-function getVisibleTasks() {
+function getVisibleTasks(filter) {
+  if (filter === "all") return tasks;
+  if (filter === "done") return tasks.filter((task) => task.done);
+  if (filter === "active") return tasks.filter((task) => !task.done);
+
   return tasks;
 }
 
@@ -49,9 +53,9 @@ function updateCounter() {
   counter.textContent = "Активных задач: " + tasks.filter((task) => !task.done).length;
 }
 
-function render() {
+function render(filter = "all") {
   list.replaceChildren();
-  const visible = getVisibleTasks();
+  const visible = getVisibleTasks(filter);
   for (let i = 0; i < visible.length; i++) {
     const task = visible[i];
     const li = document.createElement("li");
@@ -85,7 +89,7 @@ filterButtons.forEach((btn) => {
     filterButtons.forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
     currentFilter = btn.dataset.filter;
-    render();
+    render(currentFilter);
   });
 });
 
